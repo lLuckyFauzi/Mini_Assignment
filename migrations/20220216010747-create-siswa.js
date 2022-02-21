@@ -10,7 +10,7 @@ module.exports = {
       },
       nis: {
         type: Sequelize.INTEGER,
-        unique: true
+        unique: true,
       },
       nama: {
         type: Sequelize.STRING
@@ -19,6 +19,13 @@ module.exports = {
         type: Sequelize.STRING
       },
       jurusan: {
+        type: Sequelize.STRING
+      },
+      email: {
+        type: Sequelize.STRING,
+        unique: true,
+      },
+      password: {
         type: Sequelize.STRING
       },
       createdAt: {

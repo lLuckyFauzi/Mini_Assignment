@@ -17,11 +17,44 @@ module.exports = (sequelize, DataTypes) => {
     nis: {
       type: DataTypes.INTEGER,
       allowNull: false,
-      unique: {msg: 'Sudah Tersedia!'}
+      unique: {msg: 'Nis/Siswa sudah Tersedia!'},
+      validate: {
+        isNumeric: {
+          args: true,
+          msg:"Masukkan NIS dengan benar!"
+        },
+        notEmpty: {msg: 'NIS wajib di isi!'},
+      }
     }, 
-    nama: DataTypes.STRING,
+    nama: {
+      type: DataTypes.STRING,
+      validate: {
+        isAlphanumeric: {
+          args: true,
+          msg: "Nama harus Berupa Character!"
+        }
+      }
+    },
     kelas: DataTypes.STRING,
-    jurusan: DataTypes.STRING
+    jurusan: DataTypes.STRING,
+    email: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      unique: {msg: 'Email sudah Tersedia!'},
+      validate: {
+        isEmail: {msg: 'Data harus berupa Email!'},
+        notEmpty: {msg: 'Masukkan Email!'},
+      }
+    },
+    password: {
+      type: DataTypes.STRING,
+      validate: {
+        len: {
+          args: [8, 100],
+          msg: "Password minimal 8 karakter"
+        }
+      }
+    },
   }, {
     sequelize,
     modelName: 'siswa',

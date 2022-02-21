@@ -8,21 +8,30 @@ module.exports = {
         try {
             const name = req.body.nama
             const data = await Siswa.create({
-                nama: req.body.nama,
                 nis: req.body.nis,
+                nama: req.body.nama,
                 kelas: req.body.kelas,
-                jurusan: req.body.jurusan
+                jurusan: req.body.jurusan,
+                email: req.body.email,
+                password: req.body.password,
             })
             res.status(200).json({message: `Siswa ${name} created!`, data})
         } catch (error) {
-            res.status(422).json({Message: error.message})
+            console.log(error.errors)
+            if(error.errors[1]){
+                return res.status(422).json({Message: error.errors[1].message})
+            }   
+            else if(error.errors[2]){
+                return res.status(422).json({Message: "Minimal 8 karakter!"})
+            }   
+            res.status(422).json({Message: error.errors[0].message})
         }
     },
 
     getSiswa: async (req, res) => {
         try {
             const data = await Siswa.findAll({
-                attributes: ['id','nis', 'nama', 'kelas', 'jurusan']
+                attributes: ['id','nis', 'nama', 'kelas', 'jurusan','email']
             })
             if(!data){
                 res.status(404).json({message: 'No data!'})
@@ -36,10 +45,12 @@ module.exports = {
     updateSiswa: async (req, res) => {
         try {
             const data = await Siswa.update({
-                nama: req.body.nama,
                 nis: req.body.nis,
+                nama: req.body.nama,
                 kelas: req.body.kelas,
-                jurusan: req.body.jurusan
+                jurusan: req.body.jurusan,
+                email: req.body.email,
+                password: req.body.email,
             },{
                 where: {nama: req.query.nama}
             })
@@ -69,8 +80,8 @@ module.exports = {
 
     login: async (req, res) => {
         try {
-            const nama = req.body.nama;
             const nis = req.body.nis;
+            const nama = req.body.nama;
 
             const data = await Siswa.findOne({
                 where: {nama: req.body.nama}
